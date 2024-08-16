@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+    name: currently-working-on
+    namespace: currently-working-on
+spec:
+    rules:
+        - host: currently-working-on.trueberryless.org
+          http:
+              paths:
+                  - path: /
+                    pathType: Prefix
+                    backend:
+                        service:
+                            name: currently-working-on
+                            port:
+                                number: 80
+
+    tls:
+        - hosts:
+              - currently-working-on.trueberryless.org
+          secretName: currently-working-on

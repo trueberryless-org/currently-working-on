@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+    name: currently-working-on
+    namespace: currently-working-on
+spec:
+    secretName: currently-working-on
+    issuerRef:
+        name: acme-issuer
+        kind: ClusterIssuer
+    dnsNames:
+        - "currently-working-on.trueberryless.org"

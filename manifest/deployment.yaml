@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: currently-working-on
+    namespace: currently-working-on
+    labels:
+        app: currently-working-on
+spec:
+    replicas: 3
+    selector:
+        matchLabels:
+            app: currently-working-on
+    template:
+        metadata:
+            labels:
+                app: currently-working-on
+        spec:
+            containers:
+                - name: currently-working-on
+                  image: "trueberryless/currently-working-on:main-881fc13fb73ad78b21e4e7903b6d067f72dc34eb"
+                  imagePullPolicy: Always
+                  ports:
+                      - containerPort: 3000
