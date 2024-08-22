@@ -1,18 +1,21 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import type { User } from "../../../interfaces";
+import type { Application } from "../../interfaces";
+import { supabase } from '../../utils/supabaseClient';
 
-export default function userHandler(
+export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<User>,
+  res: NextApiResponse<Application>,
 ) {
   const { query, method } = req;
-  const id = parseInt(query.id as string, 10);
-  const name = query.name as string;
+  const { data, error } = await supabase
+    .from('app_data')
+    .select('name')
+    .single();
 
   switch (method) {
     case "GET":
       // Get data from your database
-      res.status(200).json({ id, name: `User ${id}` });
+      res.status(200).json({ name: data.name });
       break;
     case "PUT":
       // Update or create data in your database

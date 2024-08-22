@@ -1,4 +1,5 @@
-export type User = {
+export type Application = {
   id: number;
-  name?: string;
+  name: string;
+  url: string;
 };

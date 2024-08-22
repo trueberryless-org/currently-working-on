@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+    name: currently-working-on-db
+    namespace: currently-working-on-db
+spec:
+    rules:
+        - host: currently-working-on-db.trueberryless.org
+          http:
+              paths:
+                  - path: /
+                    pathType: Prefix
+                    backend:
+                        service:
+                            name: kong
+                            port:
+                                number: 8000
+
+    tls:
+        - hosts:
+              - currently-working-on-db.trueberryless.org
+          secretName: currently-working-on-db
