@@ -12,5 +12,6 @@ spec:
   resources:
     requests:
       storage: 100Mi
+  storageClassName: manual
   volumeName: kong-pv0
 status: {}
