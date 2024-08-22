@@ -12,5 +12,6 @@ spec:
   resources:
     requests:
       storage: 100Mi
+  storageClassName: manual
   volumeName: vector-pv1
 status: {}
