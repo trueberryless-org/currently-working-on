@@ -13,5 +13,5 @@ spec:
     requests:
       storage: 100Mi
   storageClassName: manual
-  volumeName: vector-pv0
+  volumeName: currently-working-on-db-vector-pv0
 status: {}
