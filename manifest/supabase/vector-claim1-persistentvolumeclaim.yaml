@@ -12,6 +12,4 @@ spec:
   resources:
     requests:
       storage: 100Mi
-  storageClassName: manual
-  volumeName: currently-working-on-db-vector-pv1
 status: {}
