@@ -11,7 +11,7 @@ metadata:
     app.kubernetes.io/instance: supabase
     app.kubernetes.io/managed-by: Helm
 data:
-  DB_HOST: DATABASE.NAMESPACE.svc.cluster.local
+  DB_HOST: db
   DB_NAME: postgres
   DB_PORT: "5432"
   DB_SSL: "false"
