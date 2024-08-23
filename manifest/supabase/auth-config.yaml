@@ -26,11 +26,11 @@ data:
   GOTRUE_JWT_DEFAULT_GROUP_NAME: authenticated
   GOTRUE_JWT_EXP: "3600"
   GOTRUE_MAILER_AUTOCONFIRM: "true"
-  GOTRUE_MAILER_URLPATHS_CONFIRMATION: https://API.EXAMPLE.COM/auth/v1/verify
-  GOTRUE_MAILER_URLPATHS_EMAIL_CHANGE: https://API.EXAMPLE.COM/auth/v1/verify
-  GOTRUE_MAILER_URLPATHS_INVITE: https://API.EXAMPLE.COM/auth/v1/verify
-  GOTRUE_MAILER_URLPATHS_RECOVERY: https://API.EXAMPLE.COM/auth/v1/verify
-  GOTRUE_SITE_URL: https://STUDIO.EXAMPLE.COM
+  GOTRUE_MAILER_URLPATHS_CONFIRMATION: https://currently-working-on-db.trueberryless.org/auth/v1/verify
+  GOTRUE_MAILER_URLPATHS_EMAIL_CHANGE: https://currently-working-on-db.trueberryless.org/auth/v1/verify
+  GOTRUE_MAILER_URLPATHS_INVITE: https://currently-working-on-db.trueberryless.org/auth/v1/verify
+  GOTRUE_MAILER_URLPATHS_RECOVERY: https://currently-working-on-db.trueberryless.org/auth/v1/verify
+  GOTRUE_SITE_URL: https://currently-working-on-db.trueberryless.org/studio/
   GOTRUE_SMS_AUTOCONFIRM: "false"
   GOTRUE_SMTP_ADMIN_EMAIL: SMTP_ADMIN_MAIL
   GOTRUE_SMTP_HOST: SMTP_HOST

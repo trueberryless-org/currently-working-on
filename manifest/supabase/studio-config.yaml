@@ -12,5 +12,5 @@ metadata:
     app.kubernetes.io/managed-by: Helm
 data:
   STUDIO_PG_META_URL: http://RELEASE_NAME-kong.NAMESPACE.svc.cluster.local:8000/pg
-  SUPABASE_REST_URL: https://API.EXAMPLE.COM/rest/v1/
-  SUPABASE_URL: https://API.EXAMPLE.COM
+  SUPABASE_REST_URL: https://currently-working-on-db.trueberryless.org/rest/v1/
+  SUPABASE_URL: https://currently-working-on-db.trueberryless.org
