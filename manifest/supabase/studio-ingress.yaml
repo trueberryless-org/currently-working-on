@@ -10,19 +10,16 @@ metadata:
     app.kubernetes.io/name: supabase
     app.kubernetes.io/instance: supabase
     app.kubernetes.io/managed-by: Helm
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
-  ingressClassName: nginx
   tls:
     - hosts:
-        - "STUDIO.EXAMPLE.COM"
-      secretName: STUDIO.EXAMPLE.COM
+        - currently-working-on-db.trueberryless.org
+      secretName: currently-working-on-db
   rules:
-    - host: "STUDIO.EXAMPLE.COM"
+    - host: currently-working-on-db.trueberryless.org
       http:
         paths:
-          - path: /
+          - path: /studio/
             pathType: Prefix
             backend:
               service:
