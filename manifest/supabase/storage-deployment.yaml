@@ -1,102 +1,131 @@
+---
+# Source: supabase/templates/storage/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  creationTimestamp: null
-  labels:
-    io.kompose.service: storage
-  name: storage
+  name: supabase-supabase-storage
   namespace: currently-working-on-db
+  labels:
+    helm.sh/chart: supabase-0.0.2
+    app.kubernetes.io/name: supabase
+    app.kubernetes.io/instance: supabase
+    app.kubernetes.io/managed-by: Helm
 spec:
-  replicas: 1
   selector:
     matchLabels:
-      io.kompose.service: storage
-  strategy:
-    type: Recreate
+      app.kubernetes.io/name: supabase-storage
+      app.kubernetes.io/instance: supabase
   template:
     metadata:
-      creationTimestamp: null
       labels:
-        io.kompose.network/supabase-default: "true"
-        io.kompose.service: storage
+        app.kubernetes.io/name: supabase-storage
+        app.kubernetes.io/instance: supabase
     spec:
+      restartPolicy: Always
+      serviceAccountName: supabase-supabase-storage
+      securityContext:
+        {}
       containers:
-        - env:
-            - name: ANON_KEY
+        - name: supabase-storage
+          securityContext:
+            {}
+          image: "supabase/storage-api:latest"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: DB_DRIVER
+              valueFrom:
+                configMapKeyRef:
+                  name: supabase-supabase-storage
+                  key: DB_DRIVER
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: supabase-supabase-storage
+                  key: DB_HOST
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: supabase-supabase-storage
+                  key: DB_NAME
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: supabase-supabase-storage
+                  key: DB_PORT
+            - name: DB_SSL
+              valueFrom:
+                configMapKeyRef:
+                  name: supabase-supabase-storage
+                  key: DB_SSL
+            - name: FILE_SIZE_LIMIT
+              valueFrom:
+                configMapKeyRef:
+                  name: supabase-supabase-storage
+                  key: FILE_SIZE_LIMIT
+            - name: FILE_STORAGE_BACKEND_PATH
+              valueFrom:
+                configMapKeyRef:
+                  name: supabase-supabase-storage
+                  key: FILE_STORAGE_BACKEND_PATH
+            - name: GLOBAL_S3_BUCKET
+              valueFrom:
+                configMapKeyRef:
+                  name: supabase-supabase-storage
+                  key: GLOBAL_S3_BUCKET
+            - name: PGOPTIONS
+              valueFrom:
+                configMapKeyRef:
+                  name: supabase-supabase-storage
+                  key: PGOPTIONS
+            - name: POSTGREST_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: supabase-supabase-storage
+                  key: POSTGREST_URL
+            - name: REGION
+              valueFrom:
+                configMapKeyRef:
+                  name: supabase-supabase-storage
+                  key: REGION
+            - name: STORAGE_BACKEND
+              valueFrom:
+                configMapKeyRef:
+                  name: supabase-supabase-storage
+                  key: STORAGE_BACKEND
+            - name: TENANT_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: supabase-supabase-storage
+                  key: TENANT_ID
+            - name: DB_USER
               valueFrom:
                 secretKeyRef:
                   name: supabase-secret
-                  key: ANON_KEY
+                  key: DB_USERNAME
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: supabase-secret
+                  key: DB_PASSWORD
             - name: DATABASE_URL
-              value: postgres://supabase_storage_admin:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
-            - name: ENABLE_IMAGE_TRANSFORMATION
-              value: "true"
-            - name: FILE_SIZE_LIMIT
-              value: "52428800"
-            - name: FILE_STORAGE_BACKEND_PATH
-              value: /var/lib/storage
-            - name: GLOBAL_S3_BUCKET
-              value: stub
-            - name: IMGPROXY_URL
-              value: http://imgproxy:5001
+              value: $(DB_DRIVER)://$(DB_USER):$(DB_PASSWORD)@$(DB_HOST):$(DB_PORT)/$(DB_NAME)?search_path=auth&sslmode=$(DB_SSL)
             - name: PGRST_JWT_SECRET
               valueFrom:
                 secretKeyRef:
                   name: supabase-secret
                   key: JWT_SECRET
-            - name: POSTGRES_DB
-              valueFrom:
-                configMapKeyRef:
-                  name: supabase-config-map
-                  key: POSTGRES_DB
-            - name: POSTGRES_HOST
-              valueFrom:
-                configMapKeyRef:
-                  name: supabase-config-map
-                  key: POSTGRES_HOST
-            - name: POSTGRES_PASSWORD
+            - name: ANON_KEY
               valueFrom:
                 secretKeyRef:
                   name: supabase-secret
-                  key: POSTGRES_PASSWORD
-            - name: POSTGRES_PORT
-              valueFrom:
-                configMapKeyRef:
-                  name: supabase-config-map
-                  key: POSTGRES_PORT
-            - name: POSTGREST_URL
-              value: http://rest:3000
-            - name: REGION
-              value: stub
+                  key: ANON_KEY
             - name: SERVICE_KEY
               valueFrom:
                 secretKeyRef:
                   name: supabase-secret
                   key: SERVICE_ROLE_KEY
-            - name: STORAGE_BACKEND
-              value: file
-            - name: TENANT_ID
-              value: stub
-          image: supabase/storage-api:v1.0.6
-          livenessProbe:
-            exec:
-              command:
-                - wget
-                - --no-verbose
-                - --tries=1
-                - --spider
-                - http://localhost:5000/status
-            failureThreshold: 3
-            periodSeconds: 5
-            timeoutSeconds: 5
-          name: supabase-storage
-          resources: {}
-          volumeMounts:
-            - mountPath: /var/lib/storage
-              name: storage-claim0
-      restartPolicy: Always
+          ports:
+            - name: http
+              containerPort: 5000
+              protocol: TCP
       volumes:
-        - name: storage-claim0
-          persistentVolumeClaim:
-            claimName: storage-claim0
-status: {}

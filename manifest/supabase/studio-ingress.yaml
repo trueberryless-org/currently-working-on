@@ -1,28 +1,31 @@
 ---
-# Source: supabase/templates/kong/ingress.yaml
+# Source: supabase/templates/studio/ingress.yaml
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: supabase-supabase-kong
+  name: supabase-supabase-studio
   namespace: currently-working-on-db
   labels:
     helm.sh/chart: supabase-0.0.2
     app.kubernetes.io/name: supabase
     app.kubernetes.io/instance: supabase
     app.kubernetes.io/managed-by: Helm
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
+  ingressClassName: nginx
   tls:
     - hosts:
-        - currently-working-on-db.trueberryless.org
-      secretName: currently-working-on-db
+        - "STUDIO.EXAMPLE.COM"
+      secretName: STUDIO.EXAMPLE.COM
   rules:
-    - host: currently-working-on-db.trueberryless.org
+    - host: "STUDIO.EXAMPLE.COM"
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: supabase-supabase-kong
+                name: supabase-supabase-studio
                 port:
-                  number: 8000
+                  number: 3000

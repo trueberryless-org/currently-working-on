@@ -1,0 +1,23 @@
+---
+# Source: supabase/templates/realtime/config.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: supabase-supabase-realtime
+  namespace: currently-working-on-db
+  labels:
+    helm.sh/chart: supabase-0.0.2
+    app.kubernetes.io/name: supabase
+    app.kubernetes.io/instance: supabase
+    app.kubernetes.io/managed-by: Helm
+data:
+  DB_HOST: DATABASE.NAMESPACE.svc.cluster.local
+  DB_NAME: postgres
+  DB_PORT: "5432"
+  DB_SSL: "false"
+  PORT: "4000"
+  REPLICATION_MODE: RLS
+  REPLICATION_POLL_INTERVAL: "100"
+  SECURE_CHANNELS: "true"
+  SLOT_NAME: supabase_realtime_rls
+  TEMPORARY_SLOT: "true"

@@ -1,9 +1,9 @@
 ---
-# Source: supabase/templates/kong/service.yaml
+# Source: supabase/templates/rest/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: supabase-supabase-kong
+  name: supabase-supabase-rest
   namespace: currently-working-on-db
   labels:
     helm.sh/chart: supabase-0.0.2
@@ -13,10 +13,10 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-    - port: 8000
-      targetPort: 8000
+    - port: 3000
+      targetPort: 3000
       protocol: TCP
       name: http
   selector:
-    app.kubernetes.io/name: supabase-kong
+    app.kubernetes.io/name: supabase-rest
     app.kubernetes.io/instance: supabase

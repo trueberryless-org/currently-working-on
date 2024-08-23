@@ -1,0 +1,16 @@
+---
+# Source: supabase/templates/studio/config.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: supabase-supabase-studio
+  namespace: currently-working-on-db
+  labels:
+    helm.sh/chart: supabase-0.0.2
+    app.kubernetes.io/name: supabase
+    app.kubernetes.io/instance: supabase
+    app.kubernetes.io/managed-by: Helm
+data:
+  STUDIO_PG_META_URL: http://RELEASE_NAME-kong.NAMESPACE.svc.cluster.local:8000/pg
+  SUPABASE_REST_URL: https://API.EXAMPLE.COM/rest/v1/
+  SUPABASE_URL: https://API.EXAMPLE.COM

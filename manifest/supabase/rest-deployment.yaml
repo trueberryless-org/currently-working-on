@@ -1,73 +1,94 @@
+---
+# Source: supabase/templates/rest/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  creationTimestamp: null
-  labels:
-    io.kompose.service: rest
-  name: rest
+  name: supabase-supabase-rest
   namespace: currently-working-on-db
+  labels:
+    helm.sh/chart: supabase-0.0.2
+    app.kubernetes.io/name: supabase
+    app.kubernetes.io/instance: supabase
+    app.kubernetes.io/managed-by: Helm
 spec:
-  replicas: 1
   selector:
     matchLabels:
-      io.kompose.service: rest
-  strategy: {}
+      app.kubernetes.io/name: supabase-rest
+      app.kubernetes.io/instance: supabase
   template:
     metadata:
-      creationTimestamp: null
       labels:
-        io.kompose.network/supabase-default: "true"
-        io.kompose.service: rest
+        app.kubernetes.io/name: supabase-rest
+        app.kubernetes.io/instance: supabase
     spec:
+      serviceAccountName: supabase-supabase-rest
+      securityContext:
+        {}
       containers:
-        - args:
-            - postgrest
+        - name: supabase-rest
+          securityContext:
+            {}
+          image: "postgrest/postgrest:latest"
+          imagePullPolicy: IfNotPresent
           env:
-            - name: PGRST_APP_SETTINGS_JWT_EXP
+            - name: DB_DRIVER
               valueFrom:
                 configMapKeyRef:
-                  name: supabase-config-map
-                  key: JWT_EXPIRY
-            - name: PGRST_APP_SETTINGS_JWT_SECRET
+                  name: supabase-supabase-rest
+                  key: DB_DRIVER
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: supabase-supabase-rest
+                  key: DB_HOST
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: supabase-supabase-rest
+                  key: DB_NAME
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: supabase-supabase-rest
+                  key: DB_PORT
+            - name: DB_SSL
+              valueFrom:
+                configMapKeyRef:
+                  name: supabase-supabase-rest
+                  key: DB_SSL
+            - name: PGRST_DB_ANON_ROLE
+              valueFrom:
+                configMapKeyRef:
+                  name: supabase-supabase-rest
+                  key: PGRST_DB_ANON_ROLE
+            - name: PGRST_DB_SCHEMA
+              valueFrom:
+                configMapKeyRef:
+                  name: supabase-supabase-rest
+                  key: PGRST_DB_SCHEMA
+            - name: PGRST_DB_USE_LEGACY_GUCS
+              valueFrom:
+                configMapKeyRef:
+                  name: supabase-supabase-rest
+                  key: PGRST_DB_USE_LEGACY_GUCS
+            - name: DB_USER
               valueFrom:
                 secretKeyRef:
                   name: supabase-secret
-                  key: JWT_SECRET
-            - name: PGRST_DB_ANON_ROLE
-              value: anon
-            - name: PGRST_DB_SCHEMAS
-              value: public,storage,graphql_public
+                  key: DB_USERNAME
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: supabase-secret
+                  key: DB_PASSWORD
             - name: PGRST_DB_URI
-              value: postgres://authenticator:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
-            - name: PGRST_DB_USE_LEGACY_GUCS
-              value: "false"
+              value: $(DB_DRIVER)://$(DB_USER):$(DB_PASSWORD)@$(DB_HOST):$(DB_PORT)/$(DB_NAME)?sslmode=$(DB_SSL)
             - name: PGRST_JWT_SECRET
               valueFrom:
                 secretKeyRef:
                   name: supabase-secret
                   key: JWT_SECRET
-            - name: POSTGRES_DB
-              valueFrom:
-                configMapKeyRef:
-                  name: supabase-config-map
-                  key: POSTGRES_DB
-            - name: POSTGRES_HOST
-              valueFrom:
-                configMapKeyRef:
-                  name: supabase-config-map
-                  key: POSTGRES_HOST
-            - name: POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: supabase-secret
-                  key: POSTGRES_PASSWORD
-            - name: POSTGRES_PORT
-              valueFrom:
-                configMapKeyRef:
-                  name: supabase-config-map
-                  key: POSTGRES_PORT
-          image: postgrest/postgrest:v12.2.0
-          name: supabase-rest
-          resources: {}
-      restartPolicy: Always
-status: {}
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP

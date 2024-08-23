@@ -1,0 +1,18 @@
+---
+# Source: supabase/templates/storage/volume.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: supabase-supabase-storage
+  namespace: currently-working-on-db
+  labels:
+    helm.sh/chart: supabase-0.0.2
+    app.kubernetes.io/name: supabase
+    app.kubernetes.io/instance: supabase
+    app.kubernetes.io/managed-by: Helm
+spec:
+  accessModes:
+    - "ReadWriteOnce"
+  resources:
+    requests:
+      storage: "10Gi"

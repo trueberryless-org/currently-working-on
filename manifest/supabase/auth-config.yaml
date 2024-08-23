@@ -1,0 +1,39 @@
+---
+# Source: supabase/templates/auth/config.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: supabase-supabase-auth
+  namespace: currently-working-on-db
+  labels:
+    helm.sh/chart: supabase-0.0.2
+    app.kubernetes.io/name: supabase
+    app.kubernetes.io/instance: supabase
+    app.kubernetes.io/managed-by: Helm
+data:
+  DB_DRIVER: postgres
+  DB_HOST: DATABASE.NAMESPACE.svc.cluster.local
+  DB_NAME: postgres
+  DB_PORT: "5432"
+  DB_SSL: allow
+  GOTRUE_API_HOST: 0.0.0.0
+  GOTRUE_API_PORT: "9999"
+  GOTRUE_DISABLE_SIGNUP: "false"
+  GOTRUE_EXTERNAL_EMAIL_ENABLED: "true"
+  GOTRUE_EXTERNAL_PHONE_ENABLED: "false"
+  GOTRUE_JWT_ADMIN_ROLES: service_role
+  GOTRUE_JWT_AUD: authenticated
+  GOTRUE_JWT_DEFAULT_GROUP_NAME: authenticated
+  GOTRUE_JWT_EXP: "3600"
+  GOTRUE_MAILER_AUTOCONFIRM: "true"
+  GOTRUE_MAILER_URLPATHS_CONFIRMATION: https://API.EXAMPLE.COM/auth/v1/verify
+  GOTRUE_MAILER_URLPATHS_EMAIL_CHANGE: https://API.EXAMPLE.COM/auth/v1/verify
+  GOTRUE_MAILER_URLPATHS_INVITE: https://API.EXAMPLE.COM/auth/v1/verify
+  GOTRUE_MAILER_URLPATHS_RECOVERY: https://API.EXAMPLE.COM/auth/v1/verify
+  GOTRUE_SITE_URL: https://STUDIO.EXAMPLE.COM
+  GOTRUE_SMS_AUTOCONFIRM: "false"
+  GOTRUE_SMTP_ADMIN_EMAIL: SMTP_ADMIN_MAIL
+  GOTRUE_SMTP_HOST: SMTP_HOST
+  GOTRUE_SMTP_PORT: SMTP_PORT
+  GOTRUE_SMTP_SENDER_NAME: SMTP_SENDER_NAME
+  GOTRUE_URI_ALLOW_LIST: '*'

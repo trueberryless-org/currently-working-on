@@ -1,53 +1,58 @@
+---
+# Source: supabase/templates/kong/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  creationTimestamp: null
-  labels:
-    io.kompose.service: kong
-  name: kong
+  name: supabase-supabase-kong
   namespace: currently-working-on-db
+  labels:
+    helm.sh/chart: supabase-0.0.2
+    app.kubernetes.io/name: supabase
+    app.kubernetes.io/instance: supabase
+    app.kubernetes.io/managed-by: Helm
 spec:
-  replicas: 1
   selector:
     matchLabels:
-      io.kompose.service: kong
-  strategy:
-    type: Recreate
+      app.kubernetes.io/name: supabase-kong
+      app.kubernetes.io/instance: supabase
   template:
     metadata:
-      creationTimestamp: null
       labels:
-        io.kompose.network/supabase-default: "true"
-        io.kompose.service: kong
+        app.kubernetes.io/name: supabase-kong
+        app.kubernetes.io/instance: supabase
     spec:
+      serviceAccountName: supabase-supabase-kong
+      securityContext:
+        {}
       containers:
-        - command:
-            - bash
-            - -c
-            - eval "echo \"$(cat ~/temp.yml)\"" > ~/kong.yml && /docker-entrypoint.sh kong docker-start
+        - name: supabase-kong
+          securityContext:
+            {}
+          image: "kong:latest"
+          imagePullPolicy: IfNotPresent
+          command: ["/bin/sh"]
+          args: ["/scripts/wrapper.sh"]
           env:
-            - name: DASHBOARD_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: supabase-secret
-                  key: DASHBOARD_PASSWORD
-            - name: DASHBOARD_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: supabase-secret
-                  key: DASHBOARD_USERNAME
             - name: KONG_DATABASE
-              value: "off"
+              valueFrom:
+                configMapKeyRef:
+                  name: supabase-supabase-kong
+                  key: KONG_DATABASE
             - name: KONG_DECLARATIVE_CONFIG
-              value: /home/kong/kong.yml
+              valueFrom:
+                configMapKeyRef:
+                  name: supabase-supabase-kong
+                  key: KONG_DECLARATIVE_CONFIG
             - name: KONG_DNS_ORDER
-              value: LAST,A,CNAME
-            - name: KONG_NGINX_PROXY_PROXY_BUFFERS
-              value: 64 160k
-            - name: KONG_NGINX_PROXY_PROXY_BUFFER_SIZE
-              value: 160k
+              valueFrom:
+                configMapKeyRef:
+                  name: supabase-supabase-kong
+                  key: KONG_DNS_ORDER
             - name: KONG_PLUGINS
-              value: request-transformer,cors,key-auth,acl,basic-auth
+              valueFrom:
+                configMapKeyRef:
+                  name: supabase-supabase-kong
+                  key: KONG_PLUGINS
             - name: SUPABASE_ANON_KEY
               valueFrom:
                 secretKeyRef:
@@ -58,24 +63,28 @@ spec:
                 secretKeyRef:
                   name: supabase-secret
                   key: SERVICE_ROLE_KEY
-          image: kong:2.8.1
-          name: supabase-kong
           ports:
-            - containerPort: 8000
-              hostPort: 8000
+            - name: http
+              containerPort: 8000
               protocol: TCP
-            - containerPort: 8443
-              hostPort: 8443
-              protocol: TCP
-          resources: {}
           volumeMounts:
-            - mountPath: /home/kong/temp.yml
-              name: kong-claim0
-              readOnly: true
-      restartPolicy: Always
+            - mountPath: /home/kong/template.yml
+              name: config
+              subPath: template.yml
+            - mountPath: /scripts
+              name: wrapper
       volumes:
-        - name: kong-claim0
-          persistentVolumeClaim:
-            claimName: kong-claim0
-            readOnly: true
-status: {}
+        - name: config
+          configMap:
+            name: supabase-supabase-kong
+            defaultMode: 0777
+            items:
+            - key: template.yml
+              path: template.yml
+        - name: wrapper
+          configMap:
+            name: supabase-supabase-kong
+            defaultMode: 0777
+            items:
+            - key: wrapper.sh
+              path: wrapper.sh

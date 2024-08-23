@@ -1,0 +1,21 @@
+---
+# Source: supabase/templates/rest/config.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: supabase-supabase-rest
+  namespace: currently-working-on-db
+  labels:
+    helm.sh/chart: supabase-0.0.2
+    app.kubernetes.io/name: supabase
+    app.kubernetes.io/instance: supabase
+    app.kubernetes.io/managed-by: Helm
+data:
+  DB_DRIVER: postgres
+  DB_HOST: DATABASE.NAMESPACE.svc.cluster.local
+  DB_NAME: postgres
+  DB_PORT: "5432"
+  DB_SSL: allow
+  PGRST_DB_ANON_ROLE: anon
+  PGRST_DB_SCHEMA: public,storage
+  PGRST_DB_USE_LEGACY_GUCS: "false"
