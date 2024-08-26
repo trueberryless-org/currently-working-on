@@ -14,72 +14,22 @@
 # |-- 13. Minio
 
 secret:
-  # jwt will be used to reference secret in multiple services:
-  # Anon & Service key: Studio, Storage, Kong
-  # JWT Secret: Analytics, Auth, Rest, Realtime, Storage
   jwt:
-    anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyAgCiAgICAicm9sZSI6ICJhbm9uIiwKICAgICJpc3MiOiAic3VwYWJhc2UtZGVtbyIsCiAgICAiaWF0IjogMTY0MTc2OTIwMCwKICAgICJleHAiOiAxNzk5NTM1NjAwCn0.dc_X5iR_VP_qT0zsiyj_I_OZ2T9FtRU2BBNWN8Bu4GE"
-    serviceKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyAgCiAgICAicm9sZSI6ICJzZXJ2aWNlX3JvbGUiLAogICAgImlzcyI6ICJzdXBhYmFzZS1kZW1vIiwKICAgICJpYXQiOiAxNjQxNzY5MjAwLAogICAgImV4cCI6IDE3OTk1MzU2MDAKfQ.DaYlNEoUrrEn2Ig7tqibS-PHK5vgusbcbo7X36XVt4Q"
-    secret: "your-super-secret-jwt-token-with-at-least-32-characters-long"
-    # specify existing secret, which takes precedence over variables above
-    secretRef: ""
-    # override secret keys for existing secret refs
-    secretRefKey:
-      anonKey: anonKey
-      serviceKey: serviceKey
-      secret: secret
-  # database credentials
-  # these fields must be provided even if using external database
-  db:
-    username: "postgres"
-    password: "example123456"
-    database: "postgres"
-    # specify existing secret, which takes precedence over variables above
-    secretRef: ""
-    # override secret keys for existing secret refs
-    secretRefKey:
-      username: username
-      password: password
-      database: database
-  # analytics Logflare API key
-  analytics:
-    apiKey: "your-super-secret-and-long-logflare-key"
-    # specify existing secret, which takes precedence over variable above
-    secretRef: ""
-    # override secret keys for existing secret refs
-    secretRefKey:
-      apiKey: apiKey
-  # smtp will be used to reference secret including smtp credentials
+    anonKey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyAgCiAgICAicm9sZSI6ICJhbm9uIiwKICAgICJpc3MiOiAic3VwYWJhc2UtZGVtbyIsCiAgICAiaWF0IjogMTY0MTc2OTIwMCwKICAgICJleHAiOiAxNzk5NTM1NjAwCn0.dc_X5iR_VP_qT0zsiyj_I_OZ2T9FtRU2BBNWN8Bu4GE
+    serviceKey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyAgCiAgICAicm9sZSI6ICJzZXJ2aWNlX3JvbGUiLAogICAgImlzcyI6ICJzdXBhYmFzZS1kZW1vIiwKICAgICJpYXQiOiAxNjQxNzY5MjAwLAogICAgImV4cCI6IDE3OTk1MzU2MDAKfQ.DaYlNEoUrrEn2Ig7tqibS-PHK5vgusbcbo7X36XVt4Q
+    secret: your-super-secret-jwt-token-with-at-least-32-characters-long
   smtp:
-    # username: ""
-    # password: ""
-    # specify existing secret, which takes precedence over variables above
-    # secretRef: ""
-    # override secret keys for existing secret refs
-    secretRefKey:
-      username: username
-      password: password
-  # secret used to access the studio dashboard
-  # leave it empty to disable dashboard authentication
+    username: your-mail@example.com
+    password: example123456
   dashboard:
-    # username: ""
-    # password: ""
-    # specify existing secret, which takes precedence over variables above
-    # secretRef: ""
-    # override secret keys for existing secret refs
-    secretRefKey:
-      username: username
-      password: password
-  # S3 credentials for storage object bucket
-  s3:
-    # keyId: ""
-    # accessKey: ""
-    # specify existing secret, which takes precedence over variables above
-    # secretRef: ""
-    # override secret keys for existing secret refs
-    secretRefKey:
-      keyId: keyId
-      accessKey: accessKey
+    username: supabase
+    password: this_password_is_insecure_and_should_be_updated
+  db:
+    username: postgres
+    password: example123456
+    database: postgres
+  analytics:
+    apiKey: your-super-secret-and-long-logflare-key
 
 # Optional: Postgres Database
 # A standalone Postgres database configured to work with Supabase services.
