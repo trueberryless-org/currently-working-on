@@ -1,28 +1,22 @@
----
-# Source: supabase/templates/kong/ingress.yaml
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: supabase-supabase-kong
-  namespace: currently-working-on-db
-  labels:
-    helm.sh/chart: supabase-0.0.2
-    app.kubernetes.io/name: supabase
-    app.kubernetes.io/instance: supabase
-    app.kubernetes.io/managed-by: Helm
+    name: currently-working-on-db
+    namespace: currently-working-on-db
 spec:
-  tls:
-    - hosts:
-        - currently-working-on-db.trueberryless.org
-      secretName: currently-working-on-db
-  rules:
-    - host: currently-working-on-db.trueberryless.org
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: supabase-supabase-kong
-                port:
-                  number: 8000
+    rules:
+        - host: currently-working-on-db.trueberryless.org
+          http:
+              paths:
+                  - path: /
+                    pathType: Prefix
+                    backend:
+                        service:
+                            name: kong
+                            port:
+                                number: 8000
+
+    tls:
+        - hosts:
+              - currently-working-on-db.trueberryless.org
+          secretName: currently-working-on-db
